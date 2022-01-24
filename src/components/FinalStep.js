@@ -1,11 +1,7 @@
 import {useContext} from 'react';
-import {AppContext} from '../../Provider';
+import {AppContext} from '../Provider';
 
 function FinalStep() {
-    const [inputValues, setInputValues] = useContext(AppContext);
-
-    console.log(inputValues)
-
     return (
       <>
             <div className="final">

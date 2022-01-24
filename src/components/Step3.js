@@ -1,5 +1,5 @@
-import {useContext, useState} from 'react';
-import {AppContext} from '../../Provider';
+import {useContext} from 'react';
+import {AppContext} from '../Provider';
 
 function Step3() {
   const [state, setState] = useContext(AppContext);
@@ -24,32 +24,44 @@ function Step3() {
 
     function handleClickBack () {
         setState({...state, step: state.step - 1})
-        console.log(state, "state desde step2")
     }
 
     function handleClickNext () {
         if (state.statusPhone === "ok") {
             setState({...state, step: state.step + 1})
-        } else {
-            if (state.statusPhone === "incorrect") {
-                alert("Telefono invalido.")
-            } else {
-                alert("Por favor ingrese un telefono")
-            }
-        }
+        } 
+        // else {
+        //     if (state.statusPhone === "incorrect") {
+        //         alert("Telefono invalido.")
+        //     } else {
+        //         alert("Por favor ingrese un telefono")
+        //     }
+        // }
     }
 
     return (
       <>
             <div className="form_body">
-                <div className="header">
-                    <h1>Other Info</h1>
-                    <span>{state.step}</span>
+                <div className='base-span'>
+                    <div>
+                    <span className='base'></span>
+                    </div>
+                    <div className="header">
+                        <span className='span-step3'>Step {state.step}  (75%)</span>
+                    </div>
                 </div>
+                
+                <h1>Other Info</h1>
+                
                 <div className="form_data">
                     <div className="input_field">
                         <input type="text" name="phone" onChange={handleChangePhone} value={state.phone} />
                         <span>Phone</span>
+                        {
+                            state.statusPhone === "incorrect" ? <p className='warning'>Invalid phone</p> :
+                            state.statusPhone === "" ? <p className='warning'>*Required field</p> :
+                            <></>
+                        }
                     </div>
 
                     <div className="input_field">
@@ -66,7 +78,11 @@ function Step3() {
             </div>
             <div className="footer">
                 <button onClick={handleClickBack}>Back</button>
-                <button onClick={handleClickNext}>Finish</button>
+                {
+                    (state.statusPhone === "incorrect" || state.phone === "") ?
+                    <button className='disabled'>Finish</button> :
+                    <button onClick={handleClickNext}>Finish</button>
+                }
             </div>
     </>
     );

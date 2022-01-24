@@ -1,5 +1,5 @@
 import {useContext, useState} from 'react';
-import {AppContext} from '../../Provider';
+import {AppContext} from '../Provider';
 
 function Step1() {
 
@@ -24,23 +24,22 @@ function Step1() {
   function handleClick () {
     if (state.statusEmail === "ok") {
       setState({...state, step: state.step+1})
-    } else {
-      if (state.statusEmail === "incorrect") {
-        alert("Formato del Email es incorrecto")
-      } else {
-        alert("Por favor ingrese un correo")
-      }
     }
   }
 
   return (
     <>
        <div className="form_body">
-          <div className="header">
-              <h1>Basic Details</h1>
-              <span>{state.step}</span>
+          <div className='base-span'>
+            <div>
+              <span className='base'></span>
+            </div>
+            <div className="header">
+              <span className='span-step1'>Step {state.step}  (25%)</span>
+            </div>
           </div>
 
+          <h1>Basic Details</h1>
           <div className="form_data">
               <div className="input_field">
                   <input type="text" name="firstname" onChange={handleChange} value={state.firstname}/>
@@ -55,11 +54,21 @@ function Step1() {
               <div className="input_field">
                   <input type="email" id="email" onChange={handleChangeEmail} name="email" value={state.email}/>
                   <span>Email</span>
+                  {
+                    state.statusEmail === "incorrect" ? <p className='warning'>Invalid email</p> :
+                    state.statusEmail === "" ? <p className='warning'>*Required field</p> :
+                    <></>
+                  }
               </div>
           </div>
       </div>
       <div className="footer">
-            <button onClick={handleClick}>Next</button> 
+                  {
+                    (state.statusEmail === "incorrect" || state.email === "") ? 
+                    <button className='disabled'>Next</button>:
+                    <button onClick={handleClick}>Next</button>
+                  }
+             
       </div>
       </>
     );

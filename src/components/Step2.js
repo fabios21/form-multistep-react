@@ -1,5 +1,5 @@
 import {useContext, useState} from 'react';
-import {AppContext} from '../../Provider';
+import {AppContext} from '../Provider';
 
 function Step2() {
     const [state, setState] = useContext(AppContext);
@@ -47,62 +47,66 @@ function Step2() {
     }
 
     function handleClickNext () {
-        if (state.statusPassword === "ok") {
-            if (state.statusPasswordConfirmation === "ok") {
-                if (state.statusPin === "ok") {
-                    setState({...state, step: state.step + 1})
-                } else {
-                    if (state.statusPin === "incorrect") {
-                        alert("Por favor ingrese un Pin valido")
-                    } else {
-                        alert("Por favor ingrese un Pin")
-                    }
-                }
-            } else {
-                if (state.statusPasswordConfirmation === "incorrect") {
-                    alert("Las contraseñas no coinciden.")
-                } else {
-                    alert("Por favor confirme la contraseña")
-                }
-            }
-        } else {
-            if (state.statusPassword === "incorrect") {
-                alert("La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.")
-            } else {
-                alert("Por favor ingrese un contraseña")
-            }
-        }
+        if (state.statusPassword === "ok" && state.statusPasswordConfirmation === "ok" && state.statusPin === "ok") {
+            setState({...state, step: state.step + 1})
+        } 
     }
 
     return (
         <>
         <div className="form_body">
-            <div className="header">
-                <h1>Security</h1>
-                <span>{state.step}</span>
+            <div className='base-span'>
+                <div>
+                <span className='base'></span>
+                </div>
+                <div className="header">
+                    <span className='span-step2'>Step {state.step}  (50%)</span>
+                </div>
             </div>
+
+            <h1>Security</h1>
+
             <div className="form_data">
 
                 <div className="input_field">
                     <input type="password" name="password" onChange={handleChangePassword} value={state.password}/>
                     <span>Password</span>
+                    {
+                    state.statusPassword === "incorrect" ? <p className='warning'>Invalid password - Use numbers, lowercase letters and uppercase letters</p> :
+                    state.statusPassword === "" ? <p className='warning'>*Required field</p> :
+                    <></>
+                    }
                 </div>
     
                 <div className="input_field">
                     <input type="password" onChange={handleChangePasswordConfirmation} value={state.repeatPassword}/>
                     <span>Repeat password</span>
+                    {
+                    state.statusPasswordConfirmation === "incorrect" ? <p className='warning'>Passwords do not match</p> :
+                    state.statusPasswordConfirmation === "" ? <p className='warning'>*Required field</p> :
+                    <></>
+                    }
                 </div>
 
                 <div className="input_field">
                     <input type="password" onChange={handleChangePin} value={state.pin}/>
                     <span>Pin</span>
+                    {
+                    state.statusPin === "incorrect" ? <p className='warning'>Invalid pin - Enter a 4 digit pin</p> :
+                    state.statusPin === "" ? <p className='warning'>*Required field</p> :
+                    <></>
+                    }
                 </div>
                 
             </div>
         </div>
         <div className="footer">
             <button onClick={handleClickBack}>Back</button>
+            {
+            (state.statusPassword === "incorrect" || state.password === "" || state.statusPasswordConfirmation === "incorrect" || state.statusPasswordConfirmation === "" || state.statusPin === "incorrect" || state.pin === "") ?
+            <button className='disabled'>Next</button> :
             <button onClick={handleClickNext}>Next</button>
+            }
         </div>
         </>
     );

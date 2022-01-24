@@ -1,4 +1,4 @@
-import {AppContext} from '../../Provider';
+import {AppContext} from '../Provider';
 import {useContext} from 'react';
 import Step1 from "./Step1";
 import Step2 from "./Step2";
